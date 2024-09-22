@@ -6,6 +6,10 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CategoriesModule } from './categories/categories.module';
+import { Category } from './entity/categorie.entity';
+import { ItemsModule } from './items/items.module';
+import { Item } from './entity/items.entity';
 
 @Module({
   imports: [
@@ -19,7 +23,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User],
+        entities: [User, Category, Item],
         synchronize: true,
       }),
     }),
@@ -28,6 +32,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     AuthModule,
     UsersModule,
+    CategoriesModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
