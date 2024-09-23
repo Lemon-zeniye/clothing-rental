@@ -7,6 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ItemPhoto } from 'src/entity/item-photos.entity';
 import { Item } from 'src/entity/items.entity';
 import { Repository } from 'typeorm';
+import { CreateItemPhotoDto } from './dto/item-photos-dto';
+import { Color } from 'src/entity/color.entity';
 
 @Injectable()
 export class ItemPhotosService {
@@ -14,28 +16,38 @@ export class ItemPhotosService {
     @InjectRepository(ItemPhoto)
     private itemPhotoRepository: Repository<ItemPhoto>,
     @InjectRepository(Item) private itemRepository: Repository<Item>,
+    @InjectRepository(Color) private colorRepository: Repository<Color>,
   ) {}
-  async uploadFile(file: Express.Multer.File, id: number) {
+  async uploadFile(file: Express.Multer.File, id: number, colorId: number) {
     if (!file) {
       throw new BadRequestException('No file uploaded!');
     }
+    const item = await this.itemRepository.findOneBy({ id });
+    const color = await this.colorRepository.findOneBy({
+      id: colorId,
+    });
+
+    if (!item || !color) {
+      throw new NotFoundException('Invalid item or color!');
+    }
+
     const fielData = {
       filename: file.originalname,
       data: file.buffer,
       mimetype: file.mimetype,
     };
-    const item = await this.itemRepository.findOneBy({ id });
-
-    if (!item) {
-      throw new NotFoundException('Item not found!');
-    }
 
     const payload = {
       photo: fielData,
-      item: item,
+      item,
+      color,
     };
 
     return await this.itemPhotoRepository.save(payload);
+  }
+
+  async getAll() {
+    return await this.itemPhotoRepository.find();
   }
 
   async remove(id: number) {

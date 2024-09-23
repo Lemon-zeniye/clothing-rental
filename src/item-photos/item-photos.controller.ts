@@ -1,6 +1,9 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -9,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ItemPhotosService } from './item-photos.service';
+import { CreateItemPhotoDto } from './dto/item-photos-dto';
 
 @Controller('item-photos')
 export class ItemPhotosController {
@@ -21,9 +25,16 @@ export class ItemPhotosController {
   )
   uploadFile(
     @Param('id', ParseIntPipe) id: number,
+    @Body('color_id', ParseIntPipe)
+    colorId: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.itemPhotosService.uploadFile(file, id);
+    return this.itemPhotosService.uploadFile(file, id, colorId);
+  }
+
+  @Get()
+  getAll() {
+    return this.itemPhotosService.getAll();
   }
 
   @Delete('delete/:id')
