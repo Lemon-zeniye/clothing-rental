@@ -4,16 +4,13 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoriesModule } from './categories/categories.module';
-import { Category } from './entity/categorie.entity';
 import { ItemsModule } from './items/items.module';
-import { Item } from './entity/items.entity';
 import { ClothingAttributesModule } from './clothing-attributes/clothing-attributes.module';
-import { ClothingAttribute } from './entity/clothing-attributes.entity';
 import { join } from 'path';
 import { ItemPhotosModule } from './item-photos/item-photos.module';
+import { LookupsModule } from './lookups/lookups.module';
 
 @Module({
   imports: [
@@ -40,6 +37,7 @@ import { ItemPhotosModule } from './item-photos/item-photos.module';
     ItemsModule,
     ClothingAttributesModule,
     ItemPhotosModule,
+    LookupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
