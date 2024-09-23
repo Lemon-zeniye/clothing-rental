@@ -10,6 +10,10 @@ import { CategoriesModule } from './categories/categories.module';
 import { Category } from './entity/categorie.entity';
 import { ItemsModule } from './items/items.module';
 import { Item } from './entity/items.entity';
+import { ClothingAttributesModule } from './clothing-attributes/clothing-attributes.module';
+import { ClothingAttribute } from './entity/clothing-attributes.entity';
+import { join } from 'path';
+import { ItemPhotosModule } from './item-photos/item-photos.module';
 
 @Module({
   imports: [
@@ -23,7 +27,7 @@ import { Item } from './entity/items.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Category, Item],
+        entities: [join(process.cwd(), 'dist/**/*.entity.js')],
         synchronize: true,
       }),
     }),
@@ -34,6 +38,8 @@ import { Item } from './entity/items.entity';
     UsersModule,
     CategoriesModule,
     ItemsModule,
+    ClothingAttributesModule,
+    ItemPhotosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,10 +3,13 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from './categorie.entity';
+import { ClothingAttribute } from './clothing-attributes.entity';
+import { ItemPhoto } from './item-photos.entity';
 
 @Entity('items')
 export class Item {
@@ -30,6 +33,15 @@ export class Item {
     onDelete: 'SET NULL',
   })
   category: Category;
+
+  @OneToMany(
+    () => ClothingAttribute,
+    (clothingAttribute) => clothingAttribute.item,
+  )
+  clothingAttribute: ClothingAttribute[];
+
+  @OneToMany(() => ItemPhoto, (itemPhoto) => itemPhoto.item)
+  item_photos: ItemPhoto[];
 
   @CreateDateColumn()
   created_at: Date;
