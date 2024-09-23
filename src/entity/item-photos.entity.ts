@@ -1,5 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Item } from './items.entity';
+import { Color } from './color.entity';
 
 @Entity('itemPhotos')
 export class ItemPhoto {
@@ -11,4 +18,7 @@ export class ItemPhoto {
 
   @ManyToOne(() => Item, (item) => item.item_photos)
   item: Item;
+
+  @ManyToOne(() => Color, (color) => color.item_photos)
+  color: Color;
 }

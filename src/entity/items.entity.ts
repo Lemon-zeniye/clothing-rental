@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -49,15 +50,19 @@ export class Item {
   item_photos: ItemPhoto[];
 
   @ManyToMany(() => Tag, (tag) => tag.items)
+  @JoinTable()
   tags: Tag[];
 
   @ManyToMany(() => Season, (season) => season.items)
+  @JoinTable()
   seasons: Season[];
 
   @ManyToMany(() => Occasion, (occasion) => occasion.items)
+  @JoinTable()
   occasions: Occasion[];
 
   @ManyToMany(() => Color, (color) => color.items)
+  @JoinTable()
   colors: Color[];
 
   @CreateDateColumn()
