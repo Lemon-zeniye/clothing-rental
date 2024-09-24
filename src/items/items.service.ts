@@ -22,19 +22,14 @@ export class ItemsService {
   ) {}
   async create(createItemDto: CreateItemDto) {
     try {
-      const { category_id } = createItemDto;
-      const category = await this.categoryRepository.findOneBy({
-        id: category_id,
+      const newItem = this.itemRepository.create({
+        ...createItemDto,
+        category: { id: createItemDto.category_id },
+        seasons: createItemDto.season_ids.map((id) => ({ id })),
+        occasions: createItemDto.occasion_ids.map((id) => ({ id })),
+        tags: createItemDto.tag_ids.map((id) => ({ id })),
+        colors: createItemDto.color_ids.map((id) => ({ id })),
       });
-
-      if (!category) {
-        throw new NotFoundException(
-          `Category with id ${category_id} not found`,
-        );
-      }
-
-      const newItem = this.itemRepository.create(createItemDto);
-      newItem.category = category;
 
       return await this.itemRepository.save(newItem);
     } catch (error) {
@@ -47,7 +42,16 @@ export class ItemsService {
 
   async findAll() {
     return await this.itemRepository.find({
-      relations: ['category'],
+      relations: [
+        'category',
+        'colors',
+        'occasions',
+        'seasons',
+        'tags',
+        'item_photos',
+        'clothingAttribute',
+        'item_photos.color',
+      ],
     });
   }
 

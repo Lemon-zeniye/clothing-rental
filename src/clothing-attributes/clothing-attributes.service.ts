@@ -42,7 +42,7 @@ export class ClothingAttributesService {
   }
 
   async findAll() {
-    return await this.attributeRepository.find();
+    return await this.attributeRepository.find({ relations: ['item'] });
   }
 
   async remove(id: number) {

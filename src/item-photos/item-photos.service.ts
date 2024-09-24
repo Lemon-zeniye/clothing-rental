@@ -47,7 +47,7 @@ export class ItemPhotosService {
   }
 
   async getAll() {
-    return await this.itemPhotoRepository.find();
+    return await this.itemPhotoRepository.find({ relations: ['color'] });
   }
 
   async remove(id: number) {
